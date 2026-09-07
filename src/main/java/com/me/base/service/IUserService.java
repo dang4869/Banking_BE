@@ -60,4 +60,16 @@ public interface IUserService {
      * @return user information
      */
     UserResponseDTO getUserByUsername(String username);
+
+    /**
+     * Khóa tài khoản (disable).
+     * @param id user ID
+     */
+    void lockUser(Long id);
+
+    /**
+     * Mở khóa tài khoản (enable).
+     * @param id user ID
+     */
+    void unlockUser(Long id);
 }
