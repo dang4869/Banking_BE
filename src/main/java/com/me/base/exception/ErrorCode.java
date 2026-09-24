@@ -40,6 +40,17 @@ public enum ErrorCode {
     // ========== Validation Errors (3xxx) ==========
     VALIDATION_FAILED("error.validation.failed", HttpStatus.BAD_REQUEST),
     
+    // ========== Loan Errors (6xxx) ==========
+    LOAN_NOT_FOUND("error.loan.not.found", HttpStatus.NOT_FOUND),
+    LOAN_ALREADY_PROCESSED("error.loan.already.processed", HttpStatus.CONFLICT),
+    LOAN_NOT_APPROVED("error.loan.not.approved", HttpStatus.BAD_REQUEST),
+    LOAN_ALREADY_DISBURSED("error.loan.already.disbursed", HttpStatus.CONFLICT),
+    LOAN_NOT_ACTIVE("error.loan.not.active", HttpStatus.BAD_REQUEST),
+    LOAN_ALREADY_CLOSED("error.loan.already.closed", HttpStatus.CONFLICT),
+    LOAN_REPAYMENT_NOT_FOUND("error.loan.repayment.not.found", HttpStatus.NOT_FOUND),
+    LOAN_REPAYMENT_ALREADY_PAID("error.loan.repayment.already.paid", HttpStatus.CONFLICT),
+    LOAN_AMOUNT_INVALID("error.loan.amount.invalid", HttpStatus.BAD_REQUEST),
+
     // ========== Internal Errors (5xxx) ==========
     INTERNAL_ERROR("error.internal", HttpStatus.INTERNAL_SERVER_ERROR);
     

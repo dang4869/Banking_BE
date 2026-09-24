@@ -46,6 +46,21 @@ public class UserResponseDTO {
     private Boolean enabled;
     
     /**
+     * Phone number of the user.
+     */
+    private String phoneNumber;
+
+    /**
+     * Address of the user.
+     */
+    private String address;
+
+    /**
+     * Role of the user.
+     */
+    private com.me.base.enums.Role role;
+
+    /**
      * Timestamp when the user was created.
      */
     private LocalDateTime createdAt;

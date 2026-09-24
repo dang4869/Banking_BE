@@ -51,7 +51,10 @@ public class UserService implements IUserService {
         user.setEmail(userDTO.getEmail());
         user.setFullName(userDTO.getFullName());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setPhoneNumber(userDTO.getPhoneNumber());
+        user.setAddress(userDTO.getAddress());
         user.setEnabled(true);
+        user.setRole(com.me.base.enums.Role.USER); // Mặc định là USER
         
         // Save and return
         User savedUser = userRepository.save(user);
@@ -104,6 +107,8 @@ public class UserService implements IUserService {
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
         user.setFullName(userDTO.getFullName());
+        user.setPhoneNumber(userDTO.getPhoneNumber());
+        user.setAddress(userDTO.getAddress());
         if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         }
@@ -133,6 +138,22 @@ public class UserService implements IUserService {
         return mapToResponseDTO(user);
     }
     
+    @Override
+    public void lockUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, id));
+        user.setEnabled(false);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void unlockUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, id));
+        user.setEnabled(true);
+        userRepository.save(user);
+    }
+    
     /**
      * Maps User entity to UserResponseDTO.
      * 
@@ -145,6 +166,9 @@ public class UserService implements IUserService {
         dto.setUsername(user.getUsername());
         dto.setEmail(user.getEmail());
         dto.setFullName(user.getFullName());
+        dto.setPhoneNumber(user.getPhoneNumber());
+        dto.setAddress(user.getAddress());
+        dto.setRole(user.getRole());
         dto.setEnabled(user.getEnabled());
         dto.setCreatedAt(user.getCreatedAt());
         dto.setUpdatedAt(user.getUpdatedAt());

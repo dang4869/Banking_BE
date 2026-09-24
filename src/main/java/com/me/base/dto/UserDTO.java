@@ -51,4 +51,8 @@ public class UserDTO {
     @NotBlank(message = "{validation.password.required}")
     @Size(min = 6, message = "{validation.password.size}")
     private String password;
+
+    private String phoneNumber;
+    
+    private String address;
 }

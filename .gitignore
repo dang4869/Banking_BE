@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Environment / Sensitive Config ###
+application-prod.yaml
+src/main/resources/application-prod.yaml

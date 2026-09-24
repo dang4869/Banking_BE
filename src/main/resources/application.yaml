@@ -1,24 +1,15 @@
 spring:
   application:
-    name: base
-  
-  # Database Configuration
-  datasource:
-    url: jdbc:postgresql://localhost:5432/basedb
-    username: postgres
-    password: 123
-    driver-class-name: org.postgresql.Driver
-    hikari:
-      maximum-pool-size: 10
-      minimum-idle: 5
-      connection-timeout: 30000
-  
-  # JPA/Hibernate Configuration
+    name: banking-api
+
+  profiles:
+    active: dev   # Đổi thành 'prod' khi deploy lên server
+
+  # JPA/Hibernate — cấu hình chung cho tất cả môi trường
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
-    show-sql: true
     properties:
       hibernate:
         format_sql: true
@@ -30,20 +21,11 @@ server:
   servlet:
     context-path: /
 
-# JWT Configuration
+# JWT Configuration — dùng chung, override ở từng profile nếu cần
 jwt:
   secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
-  expiration: 900000 # 15 minutes
-  refresh-expiration: 604800000 # 7 days
+  expiration: 900000        # 15 phút
+  refresh-expiration: 604800000   # 7 ngày
 
 security:
   max-refresh-tokens-per-user: 5
-
-# Logging Configuration
-logging:
-  level:
-    com.me.base: DEBUG
-    org.springframework.web: INFO
-    org.springframework.security: DEBUG
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
