@@ -172,6 +172,13 @@ public class UserService implements IUserService {
         dto.setEnabled(user.getEnabled());
         dto.setCreatedAt(user.getCreatedAt());
         dto.setUpdatedAt(user.getUpdatedAt());
+        
+        // Map relationships
+        dto.setBankAccounts(user.getBankAccounts());
+        dto.setSavingsAccounts(user.getSavingsAccounts());
+        dto.setLoans(user.getLoans());
+        dto.setBeneficiaries(user.getBeneficiaries());
+        
         return dto;
     }
 }

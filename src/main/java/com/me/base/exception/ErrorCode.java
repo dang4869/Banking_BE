@@ -51,6 +51,22 @@ public enum ErrorCode {
     LOAN_REPAYMENT_ALREADY_PAID("error.loan.repayment.already.paid", HttpStatus.CONFLICT),
     LOAN_AMOUNT_INVALID("error.loan.amount.invalid", HttpStatus.BAD_REQUEST),
 
+    // ========== Account Errors (7xxx) ==========
+    ACCOUNT_NOT_FOUND("error.account.not.found", HttpStatus.NOT_FOUND),
+    INSUFFICIENT_BALANCE("error.account.insufficient.balance", HttpStatus.BAD_REQUEST),
+    ACCOUNT_NOT_ACTIVE("error.account.not.active", HttpStatus.BAD_REQUEST),
+    INVALID_AMOUNT("error.account.invalid.amount", HttpStatus.BAD_REQUEST),
+    SAME_ACCOUNT_TRANSFER("error.account.same.account", HttpStatus.BAD_REQUEST),
+    ACCOUNT_ACCESS_DENIED("error.account.access.denied", HttpStatus.FORBIDDEN),
+
+    // ========== Beneficiary Errors (8xxx) ==========
+    BENEFICIARY_NOT_FOUND("error.beneficiary.not.found", HttpStatus.NOT_FOUND),
+    BENEFICIARY_ALREADY_EXISTS("error.beneficiary.already.exists", HttpStatus.CONFLICT),
+
+    // ========== Savings Errors (9xxx) ==========
+    SAVINGS_NOT_FOUND("error.savings.not.found", HttpStatus.NOT_FOUND),
+    SAVINGS_ALREADY_CLOSED("error.savings.already.closed", HttpStatus.CONFLICT),
+
     // ========== Internal Errors (5xxx) ==========
     INTERNAL_ERROR("error.internal", HttpStatus.INTERNAL_SERVER_ERROR);
     

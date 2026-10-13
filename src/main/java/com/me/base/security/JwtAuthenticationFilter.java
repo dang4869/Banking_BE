@@ -61,9 +61,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             jwt = authorizationHeader.substring(7);
             try {
                 userId = jwtUtil.extractUserId(jwt);
+                System.out.println("====== [JWT Filter] Extracted userId from JWT: " + userId);
             } catch (Exception e) {
-                logger.error("Error extracting user ID from JWT: " + e.getMessage());
+                System.out.println("====== [JWT Filter] Error extracting user ID from JWT: " + e.getMessage());
             }
+        } else {
+            System.out.println("====== [JWT Filter] Authorization header is missing or does not start with Bearer");
         }
         
         // Validate token and set authentication
@@ -71,12 +74,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 // Extract email from JWT to load user
                 String email = jwtUtil.extractEmail(jwt);
+                System.out.println("====== [JWT Filter] Extracted email from JWT: " + email);
                 
                 // Load user details - this will throw exception if user doesn't exist
                 UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+                System.out.println("====== [JWT Filter] Loaded UserDetails with username (userId): " + userDetails.getUsername());
                 
                 // Validate token
-                if (Boolean.TRUE.equals(jwtUtil.validateToken(jwt, userDetails))) {
+                boolean isValid = Boolean.TRUE.equals(jwtUtil.validateToken(jwt, userDetails));
+                System.out.println("====== [JWT Filter] Token validation result: " + isValid);
+                
+                if (isValid) {
                     UsernamePasswordAuthenticationToken authenticationToken = 
                         new UsernamePasswordAuthenticationToken(
                             userDetails, 
@@ -87,12 +95,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         new WebAuthenticationDetailsSource().buildDetails(request)
                     );
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    System.out.println("====== [JWT Filter] Authentication successfully set in context!");
+                } else {
+                    System.out.println("====== [JWT Filter] Token validation failed! userId.equals(username)? " + 
+                           userId.toString().equals(userDetails.getUsername()) + 
+                           " | isExpired? " + jwtUtil.extractExpiration(jwt));
                 }
             } catch (Exception e) {
                 // User not found or other error - token is invalid
-                // This handles the case where user was deleted but token is still valid
-                logger.error("Authentication failed for user ID {}: {}");
-                // Don't set authentication - request will be unauthorized
+                System.out.println("====== [JWT Filter] Authentication failed for JWT: " + e.getMessage());
+                e.printStackTrace();
             }
         }
         

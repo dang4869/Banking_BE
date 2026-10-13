@@ -41,7 +41,13 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<BaseResponse<Void>> handleBusinessException(BusinessException ex) {
-        String message = messageService.getMessage(ex.getErrorCode().getMessageKey(), ex.getArgs());
+        String message;
+        try {
+            message = messageService.getMessage(ex.getErrorCode().getMessageKey(), ex.getArgs());
+        } catch (org.springframework.context.NoSuchMessageException e) {
+            // Fallback to the raw message key if i18n translation is missing
+            message = ex.getErrorCode().getMessageKey();
+        }
         return ResponseEntity
                 .status(ex.getErrorCode().getHttpStatus())
                 .body(BaseResponse.error(message));
@@ -85,6 +91,39 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(BaseResponse.error("Validation failed", errors));
+    }
+    
+    /**
+     * Handles AccessDeniedException from Spring Security.
+     * Returns 403 FORBIDDEN.
+     */
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    public ResponseEntity<BaseResponse<Void>> handleAccessDeniedException(org.springframework.security.access.AccessDeniedException ex) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(BaseResponse.error("Access Denied"));
+    }
+    
+    /**
+     * Handles missing routes/resources (Spring 6 / Boot 3).
+     * Returns 404 NOT FOUND.
+     */
+    @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
+    public ResponseEntity<BaseResponse<Void>> handleNoResourceFoundException(org.springframework.web.servlet.resource.NoResourceFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(BaseResponse.error("Resource not found"));
+    }
+    
+    /**
+     * Handles incorrect HTTP methods.
+     * Returns 405 METHOD NOT ALLOWED.
+     */
+    @ExceptionHandler(org.springframework.web.HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<BaseResponse<Void>> handleMethodNotSupportedException(org.springframework.web.HttpRequestMethodNotSupportedException ex) {
+        return ResponseEntity
+                .status(HttpStatus.METHOD_NOT_ALLOWED)
+                .body(BaseResponse.error("Method not allowed"));
     }
     
     /**

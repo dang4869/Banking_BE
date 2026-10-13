@@ -1,10 +1,12 @@
 package com.me.base.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Data Transfer Object for User responses.
@@ -69,4 +71,16 @@ public class UserResponseDTO {
      * Timestamp when the user was last updated.
      */
     private LocalDateTime updatedAt;
+
+    @JsonIgnoreProperties({"user", "cards"})
+    private List<com.me.base.entity.BankAccount> bankAccounts;
+
+    @JsonIgnoreProperties({"user", "linkedBankAccount"})
+    private List<com.me.base.entity.SavingsAccount> savingsAccounts;
+
+    @JsonIgnoreProperties({"user", "repaymentSchedules"})
+    private List<com.me.base.entity.Loan> loans;
+
+    @JsonIgnoreProperties({"user"})
+    private List<com.me.base.entity.Beneficiary> beneficiaries;
 }
